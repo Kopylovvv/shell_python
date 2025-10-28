@@ -8,7 +8,5 @@ def run():
         core.execute_command(line)
 
 
-
-
 if __name__ == "__main__":
     run()

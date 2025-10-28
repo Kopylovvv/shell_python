@@ -1,12 +1,12 @@
-import os
 import importlib
+from pathlib import Path
 from commands.base import BaseCommand
 from src.utils.parser import parse_object
 
 
 class ShellCore:
     def __init__(self):
-        self.current_dir = os.getcwd()
+        self.current_dir = Path.cwd()
         self.commands = {}
 
     def register_command(self, command: BaseCommand):
@@ -15,11 +15,14 @@ class ShellCore:
 
     def auto_discover_commands(self, commands_folder="commands"):
         """Автоматически находит и регистрирует все команды в папке"""
-        commands_dir = os.path.join(os.path.dirname(__file__), commands_folder)
+        commands_dir = Path(__file__).parent / commands_folder # путь к папке с командами
+        commands_path = Path(commands_dir) # создание универсального пути для любой ос
 
-        for filename in os.listdir(commands_dir):
-            if filename.endswith(".py") and filename not in ["__init__.py", "base.py"]:
-                module_name = filename[:-3]  # убираем .py
+        for file_path in commands_path.iterdir(): # итерация по файлам в директории
+            # проверка, что это Python файл и не абстрактный класс или __init__.py
+            if file_path.suffix == ".py" and file_path.name not in ["__init__.py", "base.py"]:
+                module_name = file_path.stem  # получаем имя модуля без расширения
+
                 try:
                     # Импортируем модуль команды
                     module = importlib.import_module(f".{module_name}", package=commands_folder)
@@ -34,6 +37,7 @@ class ShellCore:
 
                 except ImportError as e:
                     print(f"Ошибка импорта {module_name}: {e}")
+
 
     def execute_command(self, command: str):
         """Парсит аргументы, находит и выполняет команду, логирует результат."""
