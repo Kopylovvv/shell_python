@@ -23,4 +23,3 @@ class PwdCommand(BaseCommand):
                 raise FileNotFoundError(f"No such file or directory: {str(path).split('/')[-1]}")
         else:
             raise PermissionError(f"Access denied")
-

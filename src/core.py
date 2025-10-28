@@ -51,5 +51,3 @@ class ShellCore:
             self.commands[command_params["command_name"]].execute(command_params["arguments"], command_params["options"])
         else:
             print(f"Команда '{command_params["command_name"]}' не найдена")
-
-

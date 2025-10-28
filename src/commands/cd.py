@@ -9,10 +9,12 @@ class CdCommand(BaseCommand):
         return "cd"
 
     def execute(self, args, options):
-        path = Path(args)
-        if not args or args == '~':
+        if len(args) > 1:
+            raise SyntaxError("Given more arguments than required")
+        if not args or args[0] == '~':
             os.chdir(Path.home())
         else:
+            path = Path(args[0])
             if path.exists():
                 if not path.is_file():
                     os.chdir(path)

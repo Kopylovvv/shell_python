@@ -10,8 +10,10 @@ class LsCommand(BaseCommand):
         return "ls"
 
     def execute(self, args, options):
+        if len(args) > 1:
+            raise SyntaxError("Given more arguments than required")
         if args:
-            path = Path(args)
+            path = Path(args[0])
         else:
             path = Path('.')
         if path.exists():
