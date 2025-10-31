@@ -4,13 +4,16 @@ from .base import BaseCommand
 
 
 class CdCommand(BaseCommand):
+    """
+    команда для изменения рабочей директории
+    """
     @property
     def name(self):
         return "cd"
 
     def execute(self, args, options):
         if len(args) > 1:
-            raise SyntaxError("Given more arguments than required")
+            raise SyntaxError(f"{self.name}: given more arguments than required")
         if not args or args[0] == '~':
             os.chdir(Path.home())
         else:
@@ -19,6 +22,6 @@ class CdCommand(BaseCommand):
                 if not path.is_file():
                     os.chdir(path)
                 else:
-                    raise NotADirectoryError(f"Not a directory: {str(path).split('/')[-1]}")
+                    raise NotADirectoryError(f"{self.name}: not a directory: {str(path).split('/')[-1]}")
             else:
-                raise FileNotFoundError(f"No such file or directory: {str(path).split('/')[-1]}")
+                raise FileNotFoundError(f"{self.name}: no such file or directory: {str(path).split('/')[-1]}")

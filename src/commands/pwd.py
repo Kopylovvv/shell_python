@@ -1,7 +1,11 @@
 from pathlib import Path
+
 from .base import BaseCommand
 
 class PwdCommand(BaseCommand):
+    """
+    команда вывода пути до текущей директории
+    """
     @property
     def name(self):
         return "pwd"

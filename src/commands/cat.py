@@ -2,7 +2,10 @@ from pathlib import Path
 import os
 from .base import BaseCommand
 
-class PwdCommand(BaseCommand):
+class CatCommand(BaseCommand):
+    """
+    команда для вывода содержимого файлов
+    """
     @property
     def name(self):
         return "cat"
@@ -18,8 +21,8 @@ class PwdCommand(BaseCommand):
                     with open(path) as file:
                         print(file.read())
                 else:
-                    raise FileNotFoundError(f"Not a file: {str(path).split('/')[-1]}")
+                    raise FileNotFoundError(f"{self.name}: not a file: {str(path).split('/')[-1]}")
             else:
-                raise FileNotFoundError(f"No such file or directory: {str(path).split('/')[-1]}")
+                raise FileNotFoundError(f"{self.name}: no such file or directory: {str(path).split('/')[-1]}")
         else:
-            raise PermissionError(f"Access denied")
+            raise PermissionError(f"{self.name}: access denied")

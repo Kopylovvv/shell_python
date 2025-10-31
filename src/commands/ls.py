@@ -1,17 +1,23 @@
 import os, stat, datetime
 from pathlib import Path
+
 from .base import BaseCommand
 from src.utils.format_output import format_table
 
 
 class LsCommand(BaseCommand):
+    """
+    команда для вывода содержимого директории
+
+    поддерживает простой и подробный вывод информации о файлах в директории
+    """
     @property
     def name(self):
         return "ls"
 
     def execute(self, args, options):
         if len(args) > 1:
-            raise SyntaxError("Given more arguments than required")
+            raise SyntaxError(f"{self.name}: given more arguments than required")
         if args:
             path = Path(args[0])
         else:
@@ -32,6 +38,6 @@ class LsCommand(BaseCommand):
                 else:
                     print('\n'.join(os.listdir(path)))
             else:
-                raise NotADirectoryError(f"Not a directory: {str(path).split('/')[-1]}")
+                raise NotADirectoryError(f"{self.name}: not a directory: {str(path).split('/')[-1]}")
         else:
-            raise FileNotFoundError(f"No such file or directory: {str(path).split('/')[-1]}")
+            raise FileNotFoundError(f"{self.name}: no such file or directory: {str(path).split('/')[-1]}")
