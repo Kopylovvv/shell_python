@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-def error_handler(logger):
+def error_handler():
     """
     декоратор для обработки ошибок в функциях с логированием
     перехватывает исключения в декорируемой функции, выводит их в консольи записывает в логгер
@@ -37,7 +37,7 @@ def error_handler(logger):
             # обработка ошибок
             except (FileNotFoundError, NotADirectoryError, PermissionError, SyntaxError) as e:
                 print(e) # вывод ошибки в консоль
-                logger.error(e)  # запись в лог
+                args[0].logger.error(e)  # запись в лог
 
         return wrapper
     return decorator

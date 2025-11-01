@@ -1,10 +1,30 @@
 [project]
-name = "mini-shell-python"
+name = "console-app"
 version = "0.1.0"
 description = "Add your description here"
-readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "mypy>=1.18.2",
-    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "pytest-mock>=3.12",
+    "pytest-cov>=4.1",
 ]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=src",
+    "--cov-branch",
+    "--cov-report=term-missing",
+    "-q",
+]
+
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+parallel = true
+omit = ["*/__init__.py", "exit.py", "pwd.py", "*/utils/*", "base.py", "main.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_inder = 80

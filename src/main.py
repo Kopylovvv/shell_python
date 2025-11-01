@@ -15,7 +15,7 @@ def run():
     logger.info("start")
 
     # инициализация ядра и поиск доступных команд
-    core = ShellCore()
+    core = ShellCore(logger)
     core.auto_discover_commands()
 
     # основной цикл в котором считывается команда и передается в ядро

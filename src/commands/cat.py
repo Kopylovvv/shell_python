@@ -12,17 +12,18 @@ class CatCommand(BaseCommand):
 
     def execute(self, args, options):
         if args:
-            path = Path(args)
+            path = Path(args[0])
         else:
-            path = Path('.')
-        if os.access(path, os.R_OK):
-            if path.exists():
+            raise SyntaxError(f"{self.name}: no arguments given")
+        if path.exists():
+            if os.access(path, os.R_OK):
                 if path.is_file():
                     with open(path) as file:
                         print(file.read())
                 else:
                     raise FileNotFoundError(f"{self.name}: not a file: {str(path).split('/')[-1]}")
             else:
-                raise FileNotFoundError(f"{self.name}: no such file or directory: {str(path).split('/')[-1]}")
+                raise PermissionError(f"{self.name}: access denied")
         else:
-            raise PermissionError(f"{self.name}: access denied")
+            raise FileNotFoundError(f"{self.name}: no such file or directory: {str(path).split('/')[-1]}")
+

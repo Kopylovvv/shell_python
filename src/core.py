@@ -3,14 +3,13 @@ from pathlib import Path
 
 from commands.base import BaseCommand
 from src.utils.error_decorator import error_handler
-from src.utils.logger import get_logger
 from src.utils.parser import parse_object
 
-logger = get_logger(Path(__file__).parent.parent / "shell.log")
 
 
 class ShellCore:
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         self.current_dir = Path.cwd()
         self.commands = {}
 
@@ -47,7 +46,7 @@ class ShellCore:
                         command_instance = attr()
                         self.register_command(command_instance) # добавление в словарь
 
-    @error_handler(logger) # декоратор для логирования ошибок
+    @error_handler() # декоратор для логирования ошибок
     def execute_command(self, command: str):
         """
         функция которая выполняет команду поданную на вход:
@@ -62,10 +61,10 @@ class ShellCore:
         command_params = parse_object(command)
 
         if command_params["command_name"] in self.commands:
-            logger.info(command[:-1])
+            self.logger.info(command[:-1])
             self.commands[command_params["command_name"]].execute(command_params["arguments"], command_params["options"])
         elif command_params["command_name"] == '':
             print()
         else:
-            logger.info(command[:-1])
+            self.logger.info(command[:-1])
             raise SyntaxError(f"{command_params["command_name"]}: unknown command")
